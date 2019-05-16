@@ -92,6 +92,16 @@ def run(filename):
             else:
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
             polygons = []
+            
+        elif command['op'] == 'line':
+            #print 'LINE\t' + str(args)
+
+            add_edge( edges,
+                      float(command['args'][0]), float(command['args'][1]), float(command['args'][2]),
+                      float(command['args'][3]), float(command['args'][4]), float(command['args'][5]) )
+            matrix_mult( stack[-1], edges )
+            draw_lines(edges, screen, zbuffer, color)
+            edges = []
 
         elif command['op'] == 'scale':
             #print 'SCALE\t' + str(args)
