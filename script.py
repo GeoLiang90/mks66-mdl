@@ -52,15 +52,18 @@ def run(filename):
     for symbol in symbols:
         print symbol
     '''
-
+    constants=[]
     for command in commands:
-        if command['op'] == 'sphere':
+        print command
+        if command['op'] == 'constants':
+            constants.append(command['constants'])
+        elif command['op'] == 'sphere':
             #print 'SPHERE\t' + str(args)
             add_sphere(polygons,
                        float(command['args'][0]), float(command['args'][1]), float(command['args'][2]),
                        float(command['args'][3]), step_3d)
             matrix_mult( stack[-1], polygons )
-            if command['constants'] != None:
+            if (command['constants'] != None) and (command['constants'] in constants):
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, command['constants'])
             else:
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
@@ -72,7 +75,7 @@ def run(filename):
                       float(command['args'][0]), float(command['args'][1]), float(command['args'][2]),
                       float(command['args'][3]), float(command['args'][4]), step_3d)
             matrix_mult( stack[-1], polygons )
-            if command['constants'] != None:
+            if (command['constants'] != None) and (command['constants'] in constants):
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, command['constants'])
             else:
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
@@ -84,21 +87,11 @@ def run(filename):
                     float(command['args'][0]), float(command['args'][1]), float(command['args'][2]),
                     float(command['args'][3]), float(command['args'][4]), float(command['args'][5]))
             matrix_mult( stack[-1], polygons )
-            if command['constants'] != None:
+            if (command['constants'] != None) and (command['constants'] in constants):
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, command['constants'])
             else:
                 draw_polygons(polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
             polygons = []
-
-        elif command['op'] == 'line':
-            #print 'LINE\t' + str(args)
-
-            add_edge( edges,
-                      float(command['args'][0]), float(command['args'][1]), float(command['args'][2]),
-                      float(command['args'][3]), float(command['args'][4]), float(command['args'][5]) )
-            matrix_mult( stack[-1], edges )
-            draw_lines(eges, screen, zbuffer, color)
-            edges = []
 
         elif command['op'] == 'scale':
             #print 'SCALE\t' + str(args)
